@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WARD Live</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header>
+  <img src="icons/icon32.png" alt="" width="24" height="24">
+  <h1>WARD Live</h1>
+</header>
+<main>
+  <p id="page" class="muted"></p>
+  <div class="row">
+    <button id="audit" type="button">Audit this page</button>
+    <label for="country" class="sr">Compare with</label>
+    <select id="country" aria-label="Compare with">
+      <option value="all">All five countries</option>
+      <option value="irl">Ireland</option>
+      <option value="uk">United Kingdom</option>
+      <option value="aus">Australia</option>
+      <option value="nz">New Zealand</option>
+      <option value="usa">United States</option>
+    </select>
+  </div>
+  <p id="status" role="status" aria-live="polite"></p>
+
+  <section id="result" hidden>
+    <div class="versions">
+      <div class="v"><span class="label">WCAG 2.1 AA</span><span class="big" id="n21"></span><span class="sub" id="s21"></span></div>
+      <div class="v"><span class="label">WCAG 2.2 AA</span><span class="big" id="n22"></span><span class="sub" id="s22"></span></div>
+    </div>
+    <p id="transition" class="muted"></p>
+    <p id="census"></p>
+    <h2>Violations</h2>
+    <ul id="crit"></ul>
+    <div class="row">
+      <button id="highlight" type="button">Outline on page</button>
+      <button id="clear" type="button" class="secondary">Clear</button>
+      <a id="full" href="#" target="_blank" rel="noopener" class="button secondary">Full report</a>
+    </div>
+    <p id="hl-status" class="muted" role="status" aria-live="polite"></p>
+  </section>
+
+  <details>
+    <summary>Settings</summary>
+    <label for="server">WARD Live server</label>
+    <input id="server" type="url" placeholder="http://127.0.0.1:8000">
+    <button id="save" type="button" class="secondary">Save</button>
+    <p class="muted">The server fetches the page itself, as the census did, so the result is comparable with the published dataset. Static analysis reports a floor; colour contrast and anything needing a rendered page are not covered.</p>
+  </details>
+</main>
+<script src="popup.js"></script>
+</body>
+</html>

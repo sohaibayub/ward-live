@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WARD Live: contributor study</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-header">
+  <nav aria-label="Site">
+    <a class="brand" href="/">WARD Live</a>
+    <ul>
+      <li><a href="/#audit">Audit</a></li>
+      <li><a href="#record">Record</a></li>
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="/#help">Help</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <section id="record" aria-labelledby="h-record">
+    <h1 id="h-record">Contributor study</h1>
+    <p class="lede">Task units are handed out by downloading the CSV from an audit, which registers them here. Contributors record each unit when they finish or give up on it; the verifier records the first-pass result. The summary below is computed from these records.</p>
+
+    <div class="queues">
+      <section aria-labelledby="h-contrib">
+        <h2 id="h-contrib">Contributor record</h2>
+        <form id="contrib-form" class="card">
+          <div class="field"><label for="c-task">Task id</label><input id="c-task" name="task_id" type="text" required placeholder="e.g. 4facd7b6005c-T02"></div>
+          <div class="field"><label for="c-name">Your initials or code</label><input id="c-name" name="contributor" type="text" autocomplete="off"></div>
+          <div class="field"><label for="c-min">Minutes spent</label><input id="c-min" name="minutes" type="number" min="0" step="0.5" inputmode="decimal"></div>
+          <fieldset><legend>Did you complete the unit?</legend>
+            <input type="radio" name="completed" id="c-done-y" value="yes"> <label for="c-done-y">Yes</label>
+            <input type="radio" name="completed" id="c-done-n" value="no" checked> <label for="c-done-n">No</label>
+          </fieldset>
+          <fieldset><legend>Did the unit give enough information to begin without asking the coordinator?</legend>
+            <input type="radio" name="clear" id="c-clear-y" value="yes"> <label for="c-clear-y">Yes</label>
+            <input type="radio" name="clear" id="c-clear-n" value="no" checked> <label for="c-clear-n">No</label>
+          </fieldset>
+          <div class="field"><label for="c-notes">Notes</label><textarea id="c-notes" name="notes" rows="2"></textarea></div>
+          <button type="submit">Save contributor record</button>
+          <p class="status" role="status" aria-live="polite" id="c-status"></p>
+        </form>
+      </section>
+
+      <section aria-labelledby="h-verif">
+        <h2 id="h-verif">Verifier record</h2>
+        <form id="verif-form" class="card">
+          <div class="field"><label for="v-task">Task id</label><input id="v-task" name="task_id" type="text" required></div>
+          <fieldset><legend>First-pass verification</legend>
+            <input type="radio" name="passed" id="v-pass-y" value="yes"> <label for="v-pass-y">Passed</label>
+            <input type="radio" name="passed" id="v-pass-n" value="no" checked> <label for="v-pass-n">Returned for revision</label>
+          </fieldset>
+          <div class="field"><label for="v-notes">Reason, if returned</label><textarea id="v-notes" name="notes" rows="2"></textarea></div>
+          <button type="submit">Save verifier record</button>
+          <p class="status" role="status" aria-live="polite" id="v-status"></p>
+        </form>
+      </section>
+    </div>
+  </section>
+
+  <section id="summary" aria-labelledby="h-summary">
+    <h2 id="h-summary">Summary</h2>
+    <p><a class="button secondary" href="/api/study/log.csv" download>Download the study log as CSV</a> <button type="button" id="refresh" class="secondary">Refresh summary</button></p>
+    <div class="card">
+      <table id="sum-table">
+        <caption>Figures computed from the records so far</caption>
+        <thead><tr><th scope="col">Measure</th><th scope="col">Value</th></tr></thead>
+        <tbody id="sum-body"></tbody>
+      </table>
+      <p class="muted" id="sum-note"></p>
+    </div>
+    <div class="card" id="rev-card" hidden>
+      <h3>Units returned for revision</h3>
+      <ul id="rev-list"></ul>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <p>WARD Live. University of Galway. Contact: Muhammad Sohaib Ayub, Institute for Data and AI Research.</p>
+</footer>
+<script src="/static/study.js"></script>
+</body>
+</html>

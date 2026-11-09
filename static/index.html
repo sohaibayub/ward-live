@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WARD Live: audit a website against the civil society census</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header class="site-header">
+  <nav aria-label="Site">
+    <a class="brand" href="/">WARD Live</a>
+    <ul>
+      <li><a href="#audit">Audit</a></li>
+      <li><a href="#census">Census</a></li>
+      <li><a href="/study">Study</a></li>
+      <li><a href="#help">Help</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <section id="audit" aria-labelledby="h-audit">
+    <h1 id="h-audit">Audit a website against 135,604 civil society sites</h1>
+    <p class="lede">Paste a web address. WARD fetches the homepage once, evaluates it under WCAG 2.1 and WCAG 2.2 side by side, explains each violation, places the result in the five-country census distribution, and turns the findings into remediation tasks.</p>
+    <form id="audit-form" class="audit-form">
+      <div class="field grow">
+        <label for="url">Web address</label>
+        <input id="url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://example.org" required>
+      </div>
+      <div class="field">
+        <label for="country">Compare with</label>
+        <select id="country" name="country">
+          <option value="all">All five countries</option>
+          <option value="irl">Ireland</option>
+          <option value="uk">United Kingdom</option>
+          <option value="aus">Australia</option>
+          <option value="nz">New Zealand</option>
+          <option value="usa">United States</option>
+        </select>
+      </div>
+      <div class="field">
+        <button type="submit" id="go">Run audit</button>
+      </div>
+    </form>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="results" hidden aria-labelledby="h-results">
+    <h2 id="h-results">Results for <span id="r-url"></span></h2>
+    <p class="meta" id="r-meta"></p>
+
+    <div id="r-error" class="card error" hidden></div>
+
+    <div id="r-body" hidden>
+      <h3>Two versions of the standard, one fetch</h3>
+      <div class="versions">
+        <article class="card version" aria-labelledby="v21-h">
+          <h4 id="v21-h">WCAG 2.1 AA</h4>
+          <p class="big"><span id="v21-n"></span> <span class="small">violations</span></p>
+          <dl>
+            <div><dt>Level A</dt><dd id="v21-a"></dd></div>
+            <div><dt>Level AA</dt><dd id="v21-aa"></dd></div>
+            <div><dt>Criteria passed</dt><dd id="v21-pass"></dd></div>
+            <div><dt>Compliance</dt><dd id="v21-pct"></dd></div>
+          </dl>
+          <p class="note">The regulatory baseline. EN 301 549 and the EU Web Accessibility Directive still reference WCAG 2.1.</p>
+        </article>
+        <article class="card version" aria-labelledby="v22-h">
+          <h4 id="v22-h">WCAG 2.2 AA</h4>
+          <p class="big"><span id="v22-n"></span> <span class="small">violations</span></p>
+          <dl>
+            <div><dt>Level A</dt><dd id="v22-a"></dd></div>
+            <div><dt>Level AA</dt><dd id="v22-aa"></dd></div>
+            <div><dt>Criteria passed</dt><dd id="v22-pass"></dd></div>
+            <div><dt>Compliance</dt><dd id="v22-pct"></dd></div>
+          </dl>
+          <p class="note" id="transition"></p>
+        </article>
+      </div>
+
+      <h3 id="census-h">Where this site sits in the census</h3>
+      <div class="card">
+        <div class="toolbar">
+          <fieldset>
+            <legend>Version</legend>
+            <input type="radio" name="cv" id="cv21" value="21" checked> <label for="cv21">WCAG 2.1</label>
+            <input type="radio" name="cv" id="cv22" value="22"> <label for="cv22">WCAG 2.2</label>
+          </fieldset>
+        </div>
+        <p id="census-text"></p>
+        <figure>
+          <svg id="hist" viewBox="0 0 820 260" role="img" aria-labelledby="hist-title hist-desc" width="100%">
+            <title id="hist-title">Distribution of violations per homepage in the census, with this site marked</title>
+            <desc id="hist-desc"></desc>
+          </svg>
+          <figcaption id="hist-cap"></figcaption>
+        </figure>
+      </div>
+
+      <h3>Violations explained</h3>
+      <p class="muted" id="crit-summary"></p>
+      <div id="criteria"></div>
+
+      <h3>Remediation backlog</h3>
+      <p class="muted">Each violation type becomes one task unit, as in the crowdsourcing framework presented at UD26. Non-technical units need a browser and the site's content editor; technical units need someone who can change templates or code. Level A first, then by recurrence.</p>
+      <p><a id="csv-link" class="button" href="#" download>Download task units as CSV</a></p>
+      <div class="queues">
+        <section aria-labelledby="q-nt-h">
+          <h4 id="q-nt-h">Non-technical queue <span class="count" id="q-nt-n"></span></h4>
+          <div id="q-nt"></div>
+        </section>
+        <section aria-labelledby="q-t-h">
+          <h4 id="q-t-h">Technical queue <span class="count" id="q-t-n"></span></h4>
+          <div id="q-t"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section id="census" aria-labelledby="h-census">
+    <h2 id="h-census">About the census</h2>
+    <p>Between June and July 2026 WARD audited the homepages of 161,220 civil society organisations with a recorded website in the registers of the United Kingdom, Australia, the United States, New Zealand and Ireland. 135,604 could be reached. The distribution shown above comes from those records, released as an open dataset (Zenodo DOI 10.5281/zenodo.23529469). Static analysis detects a subset of real violations, so counts are floors; the browser-based validation in the dataset quantifies the floor per criterion.</p>
+    <div id="session" class="card" hidden>
+      <h3>Audited at this stand</h3>
+      <ul id="session-list"></ul>
+    </div>
+  </section>
+
+  <section id="help" aria-labelledby="h-help">
+    <h2 id="h-help">Help and contact</h2>
+    <p>WARD is a static-analysis checker. It fetches the HTML of one page, does not run scripts, and evaluates 18 WCAG 2.1 criteria plus the four criteria WCAG 2.2 introduces. It does not test colour contrast or anything that requires rendering. A clean result here means the page passes the machine-checkable floor, not the whole standard.</p>
+    <p>Code and data: <a href="https://github.com/sohaibayub/cso-web-accessibility">cso-web-accessibility repository on GitHub</a>. Contact: Muhammad Sohaib Ayub, Institute for Data and AI Research, University of Galway.</p>
+  </section>
+</main>
+<footer class="site-footer">
+  <p>WARD Live. University of Galway. Supported by Taighde Éireann, Research Ireland, grant 23/RC/13506 at Rinn Artificial Intelligence.</p>
+</footer>
+<script src="/static/app.js"></script>
+</body>
+</html>
