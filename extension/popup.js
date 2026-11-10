@@ -8,6 +8,7 @@
   function plural(n, s) { return n + " " + s + (n === 1 ? "" : "s"); }
 
   // The audit server is fixed in DEFAULT. Only the country choice is remembered.
+  $("help").href = server + "/#help";
   chrome.storage.sync.get({ country: "auto" }, function (o) { $("country").value = o.country || "auto"; });
   $("country").addEventListener("change", function () { chrome.storage.sync.set({ country: $("country").value }); });
 

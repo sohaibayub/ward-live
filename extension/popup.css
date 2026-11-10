@@ -28,4 +28,5 @@ summary { cursor:pointer; font-weight:600; }
 label { font-weight:600; font-size:0.85rem; }
 .sr { position:absolute; left:-200rem; }
 
-.small { font-size: 0.8rem; margin-top: 0.9rem; border-top: 0.0625rem solid var(--line); padding-top: 0.6rem; }
+.help { margin-left:auto; width:1.5rem; height:1.5rem; border-radius:50%; border:0.125rem solid var(--accent); color:var(--accent); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; font-size:0.9rem; }
+.help:hover { background:var(--accent); color:#fff; }
