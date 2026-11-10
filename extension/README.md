@@ -6,8 +6,8 @@ society homepages, lists the violated criteria with the fix for each, outlines t
 offending elements on the page, and opens the full report with the remediation backlog.
 
 Install (Chrome, Edge, Brave): open chrome://extensions, turn on Developer mode,
-choose "Load unpacked" and select this folder. Start the WARD Live server
-(uvicorn app:app --port 8000) or point Settings at a hosted instance.
+choose "Load unpacked" and select this folder. The popup calls the hosted WARD Live
+server; to use a local one (uvicorn app:app --port 8000) change DEFAULT in popup.js.
 
 The server fetches the page itself with the census tool's rule set, so the counts are
 comparable with the published dataset. Outlining matches the server's element locators

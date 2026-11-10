@@ -71,4 +71,4 @@ from chrome://extensions with Developer mode on. It reads the active tab's addre
 asks the WARD Live server to audit it (so counts stay comparable with the census), shows
 the 2.1 and 2.2 results, the census placement and the violated criteria with fixes,
 outlines the offending elements on the page, and opens the full report. The server
-address is set under Settings in the popup (default https://ward-live-hxcsdha3f8fteqgq.norwayeast-01.azurewebsites.net).
+address is the DEFAULT constant in extension/popup.js.

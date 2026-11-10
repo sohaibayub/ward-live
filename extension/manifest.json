@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "WARD Live",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Audit the page you are on against WCAG 2.1 and 2.2 and see where it sits among 135,604 civil society homepages.",
   "permissions": [
     "activeTab",

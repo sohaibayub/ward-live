@@ -1,6 +1,6 @@
 # WARD Live: Chrome Web Store listing
 
-Fill the fields in the developer dashboard from the sections below. The same text works for Edge Add-ons. Replace https://ward-live-hxcsdha3f8fteqgq.norwayeast-01.azurewebsites.net with the hosted server address before submitting, and set the same address as the default in extension/popup.js before zipping.
+Fill the fields in the developer dashboard from the sections below. The same text works for Edge Add-ons.
 
 ## Store listing
 
@@ -32,7 +32,7 @@ WARD Live uses WARD, the open-source checker behind a published five-country cen
 
 WARD is a static checker. It reads the page as served and does not run scripts, so it reports a floor: colour contrast and anything that needs a rendered page are outside its scope. A clean result means the page passes the machine-checkable rules, not the whole standard.
 
-WARD Live is free, open source and carries no advertising or analytics. It is developed at the Institute for Data and AI Research, University of Galway, Ireland. The extension sends only the address of the current page to the WARD Live server, which fetches the page itself and returns the result. By default it uses the public server at https://ward-live-hxcsdha3f8fteqgq.norwayeast-01.azurewebsites.net; you can point it at your own server in Settings.
+WARD Live is free, open source and carries no advertising or analytics. It is developed at the Institute for Data and AI Research, University of Galway, Ireland. The extension sends only the address of the current page to the WARD Live server, which fetches the page itself and returns the result. Nothing else leaves your browser.
 
 Code and data: https://github.com/sohaibayub/ward-live
 Census dataset: https://doi.org/10.5281/zenodo.23529469
@@ -63,7 +63,7 @@ scripting
 Needed to add temporary outlines and labels to the offending elements on the current page when the user clicks "Outline on page", and to remove them when the user clicks "Clear". No code is loaded from a remote source.
 
 storage
-Needed to remember two settings chosen by the user: the address of the audit server and the country used for the census comparison.
+Needed to remember one setting chosen by the user: the country used for the census comparison when the user overrides the automatic detection.
 
 Host permissions
 None requested.
@@ -89,7 +89,7 @@ Certifications (tick all three)
 
 ## Edge Add-ons
 
-Same package, same text. Edge asks for the privacy policy URL and a short "notes for certification" field; paste the single purpose description there and add that the extension requires a running WARD Live server at https://ward-live-hxcsdha3f8fteqgq.norwayeast-01.azurewebsites.net.
+Same package, same text. Edge asks for the privacy policy URL and a short "notes for certification" field; paste the single purpose description there and add that the extension calls the WARD Live audit server hosted by the University of Galway team.
 
 ## Before zipping for the store
 
