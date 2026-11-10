@@ -20,6 +20,23 @@ COUNTRY_CODES = {"uk": "United Kingdom", "aus": "Australia", "usa": "United Stat
                  "nz": "New Zealand", "irl": "Ireland", "all": "All five countries"}
 
 
+TLD_COUNTRY = {"ie": "irl", "uk": "uk", "au": "aus", "nz": "nz", "us": "usa", "gov": "usa", "edu": "usa", "mil": "usa"}
+
+
+def guess_country(url):
+    """Infer the census population from the address. Returns (code, reason)."""
+    from urllib.parse import urlparse
+    host = urlparse(url if "://" in url else "https://" + url).netloc.lower().split(":")[0]
+    parts = host.split(".")
+    for n in (2, 1):
+        if len(parts) >= n:
+            tail = ".".join(parts[-n:])
+            last = parts[-1]
+            if last in TLD_COUNTRY:
+                return TLD_COUNTRY[last], f"from the .{last} address"
+    return "all", "the address does not indicate a country"
+
+
 def _sort_key(c):
     return [int(p) for p in c.split(".")]
 
@@ -67,7 +84,10 @@ def census_histogram(version="21", country="all", cap=40):
             "counts": bins, "shares": [round(100 * b / total, 3) for b in bins], "total": total}
 
 
-def build_report(url, country="all", timeout=15):
+def build_report(url, country="auto", timeout=15):
+    detected_reason = None
+    if country not in COUNTRY_CODES:
+        country, detected_reason = guess_country(url)
     checker = WARDLive(timeout=timeout)
     raw = checker.analyze(url)
     report = {
@@ -80,6 +100,9 @@ def build_report(url, country="all", timeout=15):
         "timing": {"fetch_ms": raw.get("fetch_ms"), "analyze_ms": raw.get("analyze_ms")},
         "audited_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "country": country,
+        "country_name": COUNTRY_CODES.get(country, "All five countries"),
+        "country_detected": detected_reason is not None,
+        "country_reason": detected_reason,
     }
     if raw["status"] != "tested":
         report["unreachable_note"] = (

@@ -16,6 +16,7 @@
     <button id="audit" type="button">Audit this page</button>
     <label for="country" class="sr">Compare with</label>
     <select id="country" aria-label="Compare with">
+      <option value="auto">Detect from address</option>
       <option value="all">All five countries</option>
       <option value="irl">Ireland</option>
       <option value="uk">United Kingdom</option>
@@ -43,13 +44,7 @@
     <p id="hl-status" class="muted" role="status" aria-live="polite"></p>
   </section>
 
-  <details>
-    <summary>Settings</summary>
-    <label for="server">WARD Live server</label>
-    <input id="server" type="url" placeholder="http://127.0.0.1:8000">
-    <button id="save" type="button" class="secondary">Save</button>
-    <p class="muted">The server fetches the page itself, as the census did, so the result is comparable with the published dataset. Static analysis reports a floor; colour contrast and anything needing a rendered page are not covered.</p>
-  </details>
+  <p class="muted small">WARD reads the page as served and checks 22 machine-checkable WCAG rules. Counts are a floor: colour contrast and anything needing a rendered page are not covered.</p>
 </main>
 <script src="popup.js"></script>
 </body>

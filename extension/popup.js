@@ -1,19 +1,14 @@
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
-  var DEFAULT = "http://127.0.0.1:8000";
+  var DEFAULT = "https://ward-live-hxcsdha3f8fteqgq.norwayeast-01.azurewebsites.net";
   var report = null, tab = null, server = DEFAULT;
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function plural(n, s) { return n + " " + s + (n === 1 ? "" : "s"); }
 
-  chrome.storage.sync.get({ server: DEFAULT, country: "all" }, function (o) {
-    server = (o.server || DEFAULT).replace(/\/+$/, ""); $("server").value = server; $("country").value = o.country || "all";
-  });
-  $("save").addEventListener("click", function () {
-    server = ($("server").value.trim() || DEFAULT).replace(/\/+$/, "");
-    chrome.storage.sync.set({ server: server }); $("status").textContent = "Server saved.";
-  });
+  // The audit server is fixed in DEFAULT. Only the country choice is remembered.
+  chrome.storage.sync.get({ country: "auto" }, function (o) { $("country").value = o.country || "auto"; });
   $("country").addEventListener("change", function () { chrome.storage.sync.set({ country: $("country").value }); });
 
   function setTab(t) {
@@ -36,13 +31,13 @@
     fetch(server + "/api/audit", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: tab.url, country: $("country").value }) })
       .then(function (r) { if (!r.ok) return r.json().then(function (j) { throw new Error(j.detail || r.statusText); }); return r.json(); })
       .then(function (rep) { report = rep; render(); })
-      .catch(function (e) { $("status").textContent = "Could not reach the WARD Live server at " + server + ". " + e.message; })
+      .catch(function (e) { $("status").textContent = "The audit service could not be reached. Please try again in a moment. (" + e.message + ")"; })
       .then(function () { $("audit").disabled = false; });
   });
 
   function render() {
     var r = report;
-    if (r.status !== "tested") { $("status").textContent = "Unreachable from the server: " + r.error; return; }
+    if (r.status !== "tested") { $("status").textContent = "This page could not be fetched for auditing: " + r.error; return; }
     $("status").textContent = "Done in " + (r.timing.total_ms / 1000).toFixed(1) + " s.";
     var v21 = r.versions.wcag21, v22 = r.versions.wcag22, tr = r.versions.transition;
     $("n21").textContent = v21.violations; $("s21").textContent = v21.criteria_passed + " of " + v21.criteria_evaluated + " criteria passed";
@@ -52,10 +47,12 @@
     if (tr.removed_by_22) t.push(tr.removed_by_22 + " dropped with 4.1.1");
     $("transition").textContent = t.length ? "2.1 to 2.2: " + t.join("; ") + "." : "Nothing on this page changes between 2.1 and 2.2.";
     var c = r.census.wcag21;
-    var where = c.country === "all" ? "across all five countries" : "in " + c.country_name;
-    $("census").textContent = c.site_violations === 0
+    var where = c.country === "all" ? "across all five countries" : "in " + (/^United/.test(c.country_name) ? "the " : "") + c.country_name;
+    var sentence = c.site_violations === 0
       ? "No detectable violation. Only " + c.zero_share_pct + "% of " + c.audited_sites.toLocaleString() + " audited sites " + where + " reached that."
       : "Of " + c.audited_sites.toLocaleString() + " audited sites " + where + ", " + c.pct_sites_with_fewer + "% had fewer violations and " + c.pct_sites_with_more + "% had more (median " + c.median + ").";
+    if (r.country_detected) sentence += " Compared with " + (/^United/.test(r.country_name) ? "the " : "") + r.country_name + " " + r.country_reason + ".";
+    $("census").textContent = sentence;
     $("crit").innerHTML = r.criteria.length ? r.criteria.map(function (g) {
       return "<li><span class=\"badge " + g.level + "\">" + g.level + "</span><span><strong>" + esc(g.criterion) + " " + esc(g.name) + "</strong>, " + plural(g.count, "instance") + ". " + esc(g.fix) + "</span></li>";
     }).join("") : "<li>No violation detected by the 22 machine-checkable rules.</li>";
@@ -91,7 +88,7 @@
     chrome.scripting.executeScript({ target: { tabId: tab.id }, func: outline, args: [items] }, function (res) {
       if (chrome.runtime.lastError || !res || !res[0]) { $("hl-status").textContent = "Could not outline on this page" + (chrome.runtime.lastError ? ": " + chrome.runtime.lastError.message : "") + "."; return; }
       var o = res[0].result;
-      $("hl-status").textContent = o.matched + " element" + (o.matched === 1 ? "" : "s") + " outlined. The server audited the HTML as served, so elements built by scripts after load may not be found.";
+      $("hl-status").textContent = o.matched + " element" + (o.matched === 1 ? "" : "s") + " outlined. The audit used the HTML as served, so elements built by scripts after load may not be found.";
     });
   });
   $("clear").addEventListener("click", function () {

@@ -53,7 +53,8 @@
     $("results").hidden = false;
     $("r-url").textContent = r.final_url || r.requested_url;
     $("r-meta").textContent = (r.page_title ? "Page title: " + r.page_title + ". " : "") +
-      "Audited " + r.audited_at + ". Fetch " + r.timing.fetch_ms + " ms, analysis " + (r.timing.analyze_ms || 0) + " ms.";
+      "Audited " + r.audited_at + ". Fetch " + r.timing.fetch_ms + " ms, analysis " + (r.timing.analyze_ms || 0) + " ms. " +
+      (r.country_detected ? "Compared with " + (/^United/.test(r.country_name) ? "the " : "") + r.country_name + ", " + r.country_reason + "; change the comparison above and run again if you prefer another." : "Compared with " + r.country_name + ".");
     if (r.status !== "tested") {
       $("r-body").hidden = true;
       $("r-error").hidden = false;
@@ -97,7 +98,7 @@
       : fetch("/api/census?version=" + ver + "&country=" + encodeURIComponent(report.country)).then(function (r) { return r.json(); }).then(function (h) { censusCache[key] = h; return h; });
     p.then(function (h) {
       var n = c.site_violations;
-      var where = c.country === "all" ? "across all five countries" : "in " + c.country_name;
+      var where = c.country === "all" ? "across all five countries" : "in " + (/^United/.test(c.country_name) ? "the " : "") + c.country_name;
       var text = "Under WCAG " + c.version + " this homepage has " + plural(n, "detectable violation") + ". ";
       if (n === 0) {
         text += "Only " + c.zero_share_pct + "% of the " + fmt(c.audited_sites) + " audited sites " + where + " reached zero. ";

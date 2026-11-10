@@ -29,7 +29,7 @@ AUDIT_SEMAPHORE = asyncio.Semaphore(4)
 
 class AuditRequest(BaseModel):
     url: str
-    country: str = "all"
+    country: str = "auto"
 
 
 def _remember(report):
@@ -43,7 +43,7 @@ async def audit(req: AuditRequest):
     url = req.url.strip()
     if not url or " " in url or len(url) > 2000:
         raise HTTPException(400, "Please enter one web address.")
-    country = req.country if req.country in COUNTRY_CODES else "all"
+    country = req.country if req.country in COUNTRY_CODES else "auto"
     async with AUDIT_SEMAPHORE:
         t0 = time.time()
         report = await asyncio.to_thread(build_report, url, country)

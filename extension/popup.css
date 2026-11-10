@@ -27,3 +27,5 @@ details { margin-top:0.9rem; border-top:0.0625rem solid var(--line); padding-top
 summary { cursor:pointer; font-weight:600; }
 label { font-weight:600; font-size:0.85rem; }
 .sr { position:absolute; left:-200rem; }
+
+.small { font-size: 0.8rem; margin-top: 0.9rem; border-top: 0.0625rem solid var(--line); padding-top: 0.6rem; }
