@@ -66,7 +66,8 @@ first-pass verification rate, and the units returned for revision with the reaso
 
 ## Browser extension
 
-extension/ is a Manifest V3 extension for Chrome, Edge and Brave. Load it unpacked
+extension/ is a Manifest V3 extension for Chrome, Edge and Brave. Install it
+from the Chrome Web Store (https://chromewebstore.google.com/detail/ward-live/plpodadcdleceoikdbmindckienlebjn), or unpacked
 from chrome://extensions with Developer mode on. It reads the active tab's address,
 asks the WARD Live server to audit it (so counts stay comparable with the census), shows
 the 2.1 and 2.2 results, the census placement and the violated criteria with fixes,

@@ -5,7 +5,9 @@ running WARD Live server, shows where the page sits in the census of 135,604 civ
 society homepages, lists the violated criteria with the fix for each, outlines the
 offending elements on the page, and opens the full report with the remediation backlog.
 
-Install (Chrome, Edge, Brave): open chrome://extensions, turn on Developer mode,
+Install from the Chrome Web Store: https://chromewebstore.google.com/detail/ward-live/plpodadcdleceoikdbmindckienlebjn
+
+Install unpacked (Chrome, Edge, Brave): open chrome://extensions, turn on Developer mode,
 choose "Load unpacked" and select this folder. The popup calls the hosted WARD Live
 server; to use a local one (uvicorn app:app --port 8000) change DEFAULT in popup.js.
 
